@@ -1,522 +1,336 @@
+let currentQuestion = 0;
+let score = 0;
+
+
+const questions =
+  gameData.questions;
+
+
+document
+  .getElementById("gameTitle")
+  .textContent =
+  gameData.title;
+
+
+const nextButton =
+  document.getElementById(
+    "nextBtn"
+  );
+
+
+nextButton.addEventListener(
+  "click",
+  nextQuestion
+);
+
+
+
 /* =========================
-   RESET
+   LOAD QUESTION
 ========================= */
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  -webkit-tap-highlight-color: transparent;
-}
+function loadQuestion() {
 
-html,
-body {
-  width: 100%;
-  min-height: 100%;
-}
+  const question =
+    questions[currentQuestion];
 
 
-/* =========================
-   PAGE
-========================= */
-
-body {
-
-  min-height: 100vh;
-  min-height: 100dvh;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  font-family:
-    Arial,
-    sans-serif;
-
-  background:
-    linear-gradient(
-      135deg,
-      #74ebd5,
-      #ACB6E5
+  const questionImage =
+    document.getElementById(
+      "questionImage"
     );
 
-  padding:
-    max(15px, env(safe-area-inset-top))
-    max(15px, env(safe-area-inset-right))
-    max(15px, env(safe-area-inset-bottom))
-    max(15px, env(safe-area-inset-left));
 
-  overflow-x: hidden;
-}
+  /* Reset */
+
+  document
+    .getElementById("result")
+    .textContent = "";
 
 
-/* =========================
-   GAME CONTAINER
-========================= */
-
-.game-container {
-
-  width: min(100%, 900px);
-
-  min-height:
-    min(750px, 92dvh);
-
-  background: white;
-
-  border-radius:
-    clamp(20px, 4vw, 30px);
-
-  padding:
-    clamp(20px, 5vw, 50px);
-
-  text-align: center;
-
-  box-shadow:
-    0 15px 40px
-    rgba(0, 0, 0, 0.2);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-}
+  nextButton.style.display =
+    "none";
 
 
-/* =========================
-   HEADER
-========================= */
+  /* Progress */
 
-.game-header {
-  width: 100%;
-}
+  document
+    .getElementById("progress")
+    .textContent =
 
-h1 {
-
-  font-size:
-    clamp(26px, 5vw, 42px);
-
-  margin-bottom: 10px;
-
-}
-
-.progress {
-
-  font-size:
-    clamp(14px, 2.5vw, 20px);
-
-  margin:
-    clamp(10px, 2vw, 20px)
-    0;
-
-}
+    `Question ${currentQuestion + 1} of ${questions.length}`;
 
 
-/* =========================
-   QUESTION AREA
-========================= */
+  /* Question */
 
-.question-area {
+  document
+    .getElementById("question")
+    .textContent =
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  width: 100%;
-
-}
+    question.question;
 
 
-/* =========================
-   QUESTION IMAGE
-========================= */
+  /* Image */
 
-.question-image {
+  if (question.image) {
 
-  display: none;
-
-  width:
-    min(100%, 520px);
-
-  max-height:
-    35dvh;
-
-  object-fit:
-    contain;
-
-  border-radius:
-    20px;
-
-  margin:
-    10px auto 20px;
-
-}
+    questionImage.src =
+      question.image;
 
 
-/* =========================
-   QUESTION TEXT
-========================= */
-
-.question {
-
-  font-size:
-    clamp(24px, 5vw, 38px);
-
-  line-height:
-    1.35;
-
-  margin:
-    clamp(15px, 4vw, 35px)
-    0;
-
-  font-weight: bold;
-
-}
+    questionImage.alt =
+      question.question;
 
 
-/* =========================
-   ANSWERS
-========================= */
+    questionImage.style.display =
+      "block";
 
-.answers {
+  }
 
-  width: 100%;
+  else {
 
-  display: grid;
-
-  grid-template-columns:
-    repeat(
-      2,
-      minmax(0, 1fr)
+    questionImage.removeAttribute(
+      "src"
     );
 
-  gap:
-    clamp(10px, 2vw, 20px);
 
-}
+    questionImage.alt = "";
 
 
-/* =========================
-   ANSWER BUTTON
-========================= */
-
-.answer-btn {
-
-  min-height: 75px;
-
-  padding:
-    clamp(15px, 3vw, 25px);
-
-  border: none;
-
-  border-radius:
-    clamp(15px, 3vw, 22px);
-
-  font-size:
-    clamp(18px, 3vw, 26px);
-
-  font-weight: bold;
-
-  cursor: pointer;
-
-  touch-action:
-    manipulation;
-
-  transition:
-    transform 0.2s,
-    filter 0.2s;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-
-
-.answer-btn:hover {
-
-  transform:
-    scale(1.03);
-
-}
-
-
-.answer-btn:active {
-
-  transform:
-    scale(0.97);
-
-}
-
-
-/* Màu 4 đáp án */
-
-.answer-btn:nth-child(1) {
-  background: #ffb3ba;
-}
-
-.answer-btn:nth-child(2) {
-  background: #bae1ff;
-}
-
-.answer-btn:nth-child(3) {
-  background: #baffc9;
-}
-
-.answer-btn:nth-child(4) {
-  background: #ffffba;
-}
-
-
-/* =========================
-   CORRECT / WRONG
-========================= */
-
-.correct {
-
-  background: #4CAF50 !important;
-  color: white;
-
-}
-
-
-.wrong {
-
-  background: #f44336 !important;
-  color: white;
-
-}
-
-
-/* =========================
-   RESULT
-========================= */
-
-.result {
-
-  font-size:
-    clamp(20px, 4vw, 30px);
-
-  min-height: 40px;
-
-  margin:
-    clamp(15px, 3vw, 25px)
-    0;
-
-}
-
-
-/* =========================
-   NEXT BUTTON
-========================= */
-
-.next-btn {
-
-  align-self: center;
-
-  min-height: 55px;
-
-  margin-top:
-    clamp(10px, 3vw, 25px);
-
-  padding:
-    15px
-    clamp(25px, 5vw, 45px);
-
-  border: none;
-
-  border-radius: 999px;
-
-  background: #5c6bc0;
-
-  color: white;
-
-  font-size:
-    clamp(18px, 3vw, 24px);
-
-  font-weight: bold;
-
-  cursor: pointer;
-
-  touch-action:
-    manipulation;
-
-  transition:
-    transform 0.2s;
-
-}
-
-
-.next-btn:hover {
-
-  transform:
-    scale(1.05);
-
-}
-
-
-.next-btn:active {
-
-  transform:
-    scale(0.96);
-
-}
-
-
-/* =========================
-   MOBILE PORTRAIT
-========================= */
-
-@media (max-width: 600px)
-and (orientation: portrait) {
-
-  body {
-
-    align-items:
-      flex-start;
+    questionImage.style.display =
+      "none";
 
   }
 
 
-  .game-container {
+  /* Answers */
 
-    min-height:
-      calc(
-        100dvh - 30px
+  const answersContainer =
+    document.getElementById(
+      "answers"
+    );
+
+
+  answersContainer.innerHTML =
+    "";
+
+
+  question.answers.forEach(
+    (answer, index) => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.type =
+        "button";
+
+
+      button.textContent =
+        answer;
+
+
+      button.classList.add(
+        "answer-btn"
       );
 
-    justify-content:
-      flex-start;
 
-  }
-
-
-  .answers {
-
-    grid-template-columns:
-      1fr;
-
-  }
+      button.addEventListener(
+        "click",
+        () =>
+          checkAnswer(index)
+      );
 
 
-  .answer-btn {
+      answersContainer.appendChild(
+        button
+      );
 
-    min-height:
-      65px;
-
-  }
+    }
+  );
 
 }
+
 
 
 /* =========================
-   MOBILE LANDSCAPE
+   CHECK ANSWER
 ========================= */
 
-@media (max-height: 600px)
-and (orientation: landscape) {
+function checkAnswer(
+  selectedAnswer
+) {
 
-  body {
+  const question =
+    questions[currentQuestion];
 
-    padding:
-      10px;
+
+  const buttons =
+    document.querySelectorAll(
+      ".answer-btn"
+    );
+
+
+  buttons.forEach(
+    (button, index) => {
+
+      button.disabled =
+        true;
+
+
+      if (
+        index === question.correct
+      ) {
+
+        button.classList.add(
+          "correct"
+        );
+
+      }
+
+    }
+  );
+
+
+  const result =
+    document.getElementById(
+      "result"
+    );
+
+
+  if (
+    selectedAnswer ===
+    question.correct
+  ) {
+
+    score++;
+
+
+    result.textContent =
+      "🎉 Correct! Great job!";
+
+  }
+
+  else {
+
+    buttons[
+      selectedAnswer
+    ].classList.add(
+      "wrong"
+    );
+
+
+    result.textContent =
+      "❌ Oops! The green answer is correct!";
 
   }
 
 
-  .game-container {
+  nextButton.style.display =
+    "inline-block";
 
-    min-height:
-      calc(
-        100dvh - 20px
-      );
-
-    max-width:
-      1100px;
-
-    padding:
-      15px
-      clamp(25px, 5vw, 60px);
-
-  }
+}
 
 
-  h1 {
 
-    font-size:
-      clamp(22px, 4vw, 32px);
+/* =========================
+   NEXT QUESTION
+========================= */
 
-    margin-bottom:
-      5px;
+function nextQuestion() {
+
+  currentQuestion++;
+
+
+  if (
+    currentQuestion <
+    questions.length
+  ) {
+
+    loadQuestion();
 
   }
 
+  else {
 
-  .progress {
-
-    margin:
-      5px 0;
-
-  }
-
-
-  .question-image {
-
-    max-height:
-      30dvh;
-
-    margin:
-      5px auto 10px;
-
-  }
-
-
-  .question {
-
-    font-size:
-      clamp(20px, 4vw, 30px);
-
-    margin:
-      10px 0;
-
-  }
-
-
-  .answer-btn {
-
-    min-height:
-      50px;
-
-    padding:
-      10px;
-
-  }
-
-
-  .result {
-
-    margin:
-      8px 0;
-
-    min-height:
-      25px;
-
-  }
-
-
-  .next-btn {
-
-    min-height:
-      45px;
-
-    padding:
-      10px 30px;
-
-    margin-top:
-      5px;
+    showFinalResult();
 
   }
 
 }
 
+
+
+/* =========================
+   FINAL RESULT
+========================= */
+
+function showFinalResult() {
+
+  const gameContainer =
+    document.querySelector(
+      ".game-container"
+    );
+
+
+  gameContainer.innerHTML = `
+
+    <h1>
+      🏆 Game Over!
+    </h1>
+
+    <div class="result">
+
+      You got
+      ${score} / ${questions.length}
+      correct!
+
+    </div>
+
+    <button
+      class="next-btn"
+      id="restartBtn"
+      type="button"
+    >
+      🔄 Play Again
+    </button>
+
+  `;
+
+
+  document
+    .getElementById(
+      "restartBtn"
+    )
+    .addEventListener(
+      "click",
+      restartGame
+    );
+
+}
+
+
+
+/* =========================
+   RESTART GAME
+========================= */
+
+function restartGame() {
+
+  currentQuestion = 0;
+  score = 0;
+
+
+  window.location.reload();
+
+}
+
+
+
+/* =========================
+   START GAME
+========================= */
 
 loadQuestion();
