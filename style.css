@@ -1,3 +1,7 @@
+/* =========================
+   RESET
+========================= */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,11 +9,19 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-html {
+html,
+body {
+  width: 100%;
   min-height: 100%;
 }
 
+
+/* =========================
+   PAGE
+========================= */
+
 body {
+
   min-height: 100vh;
   min-height: 100dvh;
 
@@ -17,10 +29,16 @@ body {
   justify-content: center;
   align-items: center;
 
-  font-family: Arial, sans-serif;
+  font-family:
+    Arial,
+    sans-serif;
 
   background:
-    linear-gradient(135deg, #74ebd5, #ACB6E5);
+    linear-gradient(
+      135deg,
+      #74ebd5,
+      #ACB6E5
+    );
 
   padding:
     max(15px, env(safe-area-inset-top))
@@ -31,16 +49,25 @@ body {
   overflow-x: hidden;
 }
 
-.game-container {
-  width: min(100%, 850px);
 
-  min-height: min(700px, 90dvh);
+/* =========================
+   GAME CONTAINER
+========================= */
+
+.game-container {
+
+  width: min(100%, 900px);
+
+  min-height:
+    min(750px, 92dvh);
 
   background: white;
 
-  border-radius: clamp(20px, 4vw, 30px);
+  border-radius:
+    clamp(20px, 4vw, 30px);
 
-  padding: clamp(20px, 5vw, 50px);
+  padding:
+    clamp(20px, 5vw, 50px);
 
   text-align: center;
 
@@ -51,48 +78,148 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
 }
 
-h1 {
-  font-size: clamp(26px, 5vw, 42px);
-  margin-bottom: 15px;
-}
 
-.progress {
-  font-size: clamp(14px, 2.5vw, 20px);
-  margin: clamp(10px, 3vw, 25px) 0;
-}
+/* =========================
+   HEADER
+========================= */
 
-.question {
-  font-size: clamp(24px, 5vw, 38px);
-  line-height: 1.35;
-  margin: clamp(20px, 5vw, 45px) 0;
-  font-weight: bold;
-}
-
-.answers {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(10px, 2vw, 20px);
+.game-header {
   width: 100%;
 }
 
+h1 {
+
+  font-size:
+    clamp(26px, 5vw, 42px);
+
+  margin-bottom: 10px;
+
+}
+
+.progress {
+
+  font-size:
+    clamp(14px, 2.5vw, 20px);
+
+  margin:
+    clamp(10px, 2vw, 20px)
+    0;
+
+}
+
+
+/* =========================
+   QUESTION AREA
+========================= */
+
+.question-area {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+
+}
+
+
+/* =========================
+   QUESTION IMAGE
+========================= */
+
+.question-image {
+
+  display: none;
+
+  width:
+    min(100%, 520px);
+
+  max-height:
+    35dvh;
+
+  object-fit:
+    contain;
+
+  border-radius:
+    20px;
+
+  margin:
+    10px auto 20px;
+
+}
+
+
+/* =========================
+   QUESTION TEXT
+========================= */
+
+.question {
+
+  font-size:
+    clamp(24px, 5vw, 38px);
+
+  line-height:
+    1.35;
+
+  margin:
+    clamp(15px, 4vw, 35px)
+    0;
+
+  font-weight: bold;
+
+}
+
+
+/* =========================
+   ANSWERS
+========================= */
+
+.answers {
+
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    clamp(10px, 2vw, 20px);
+
+}
+
+
+/* =========================
+   ANSWER BUTTON
+========================= */
+
 .answer-btn {
+
   min-height: 75px;
 
-  padding: clamp(15px, 3vw, 25px);
+  padding:
+    clamp(15px, 3vw, 25px);
 
   border: none;
 
-  border-radius: clamp(15px, 3vw, 22px);
+  border-radius:
+    clamp(15px, 3vw, 22px);
 
-  font-size: clamp(18px, 3vw, 26px);
+  font-size:
+    clamp(18px, 3vw, 26px);
 
   font-weight: bold;
 
   cursor: pointer;
 
-  touch-action: manipulation;
+  touch-action:
+    manipulation;
 
   transition:
     transform 0.2s,
@@ -101,15 +228,27 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
+
 
 .answer-btn:hover {
-  transform: scale(1.03);
+
+  transform:
+    scale(1.03);
+
 }
 
+
 .answer-btn:active {
-  transform: scale(0.97);
+
+  transform:
+    scale(0.97);
+
 }
+
+
+/* Màu 4 đáp án */
 
 .answer-btn:nth-child(1) {
   background: #ffb3ba;
@@ -127,28 +266,57 @@ h1 {
   background: #ffffba;
 }
 
+
+/* =========================
+   CORRECT / WRONG
+========================= */
+
 .correct {
+
   background: #4CAF50 !important;
   color: white;
+
 }
+
 
 .wrong {
+
   background: #f44336 !important;
   color: white;
+
 }
 
-#result {
-  font-size: clamp(20px, 4vw, 30px);
+
+/* =========================
+   RESULT
+========================= */
+
+.result {
+
+  font-size:
+    clamp(20px, 4vw, 30px);
+
   min-height: 40px;
-  margin: clamp(15px, 3vw, 25px) 0;
+
+  margin:
+    clamp(15px, 3vw, 25px)
+    0;
+
 }
+
+
+/* =========================
+   NEXT BUTTON
+========================= */
 
 .next-btn {
+
   align-self: center;
 
   min-height: 55px;
 
-  margin-top: clamp(10px, 3vw, 25px);
+  margin-top:
+    clamp(10px, 3vw, 25px);
 
   padding:
     15px
@@ -162,105 +330,190 @@ h1 {
 
   color: white;
 
-  font-size: clamp(18px, 3vw, 24px);
+  font-size:
+    clamp(18px, 3vw, 24px);
 
   font-weight: bold;
 
   cursor: pointer;
 
-  touch-action: manipulation;
+  touch-action:
+    manipulation;
 
-  transition: transform 0.2s;
+  transition:
+    transform 0.2s;
+
 }
+
 
 .next-btn:hover {
-  transform: scale(1.05);
+
+  transform:
+    scale(1.05);
+
 }
+
 
 .next-btn:active {
-  transform: scale(0.96);
+
+  transform:
+    scale(0.96);
+
 }
 
 
-/* PHONE PORTRAIT */
+/* =========================
+   MOBILE PORTRAIT
+========================= */
 
 @media (max-width: 600px)
 and (orientation: portrait) {
 
   body {
-    align-items: flex-start;
+
+    align-items:
+      flex-start;
+
   }
+
 
   .game-container {
-    min-height:
-      calc(100dvh - 30px);
 
-    justify-content: flex-start;
+    min-height:
+      calc(
+        100dvh - 30px
+      );
+
+    justify-content:
+      flex-start;
+
   }
+
 
   .answers {
-    grid-template-columns: 1fr;
+
+    grid-template-columns:
+      1fr;
+
   }
 
+
   .answer-btn {
-    min-height: 65px;
+
+    min-height:
+      65px;
+
   }
 
 }
 
 
-/* PHONE LANDSCAPE */
+/* =========================
+   MOBILE LANDSCAPE
+========================= */
 
 @media (max-height: 600px)
 and (orientation: landscape) {
 
   body {
-    padding: 10px;
-  }
-
-  .game-container {
-    min-height:
-      calc(100dvh - 20px);
-
-    max-width: 1000px;
 
     padding:
-      20px
-      clamp(25px, 5vw, 60px);
+      10px;
+
   }
 
+
+  .game-container {
+
+    min-height:
+      calc(
+        100dvh - 20px
+      );
+
+    max-width:
+      1100px;
+
+    padding:
+      15px
+      clamp(25px, 5vw, 60px);
+
+  }
+
+
   h1 {
+
     font-size:
       clamp(22px, 4vw, 32px);
 
-    margin-bottom: 5px;
+    margin-bottom:
+      5px;
+
   }
 
+
+  .progress {
+
+    margin:
+      5px 0;
+
+  }
+
+
+  .question-image {
+
+    max-height:
+      30dvh;
+
+    margin:
+      5px auto 10px;
+
+  }
+
+
   .question {
+
     font-size:
       clamp(20px, 4vw, 30px);
 
-    margin: 15px 0;
+    margin:
+      10px 0;
+
   }
 
-  .progress {
-    margin: 5px 0;
-  }
 
   .answer-btn {
-    min-height: 55px;
-    padding: 12px;
+
+    min-height:
+      50px;
+
+    padding:
+      10px;
+
   }
 
-  #result {
-    margin: 10px 0;
-    min-height: 25px;
+
+  .result {
+
+    margin:
+      8px 0;
+
+    min-height:
+      25px;
+
   }
+
 
   .next-btn {
-    min-height: 45px;
-    padding: 10px 30px;
-    margin-top: 5px;
+
+    min-height:
+      45px;
+
+    padding:
+      10px 30px;
+
+    margin-top:
+      5px;
+
   }
 
 }
