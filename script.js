@@ -1,311 +1,520 @@
-const questions = [
+/* =========================
+   RESET
+========================= */
 
-  {
-    question: "What do you use to write?",
-    answers: [
-      "A pencil",
-      "A banana",
-      "A shoe",
-      "A ball"
-    ],
-    correct: 0
-  },
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
 
-  {
-    question: "Which animal can fly?",
-    answers: [
-      "Dog",
-      "Cat",
-      "Bird",
-      "Fish"
-    ],
-    correct: 2
-  },
-
-  {
-    question: "What colour is the sun?",
-    answers: [
-      "Yellow",
-      "Blue",
-      "Purple",
-      "Black"
-    ],
-    correct: 0
-  },
-
-  {
-    question: "How many days are there in a week?",
-    answers: [
-      "Five",
-      "Six",
-      "Seven",
-      "Eight"
-    ],
-    correct: 2
-  },
-
-  {
-    question: "Which one is a fruit?",
-    answers: [
-      "Apple",
-      "Chair",
-      "Book",
-      "Car"
-    ],
-    correct: 0
-  }
-
-];
-
-
-let currentQuestion = 0;
-let score = 0;
-
-
-function loadQuestion() {
-
-  document
-    .getElementById("result")
-    .innerHTML = "";
-
-
-  document
-    .getElementById("nextBtn")
-    .style.display = "none";
-
-
-  const question =
-    questions[currentQuestion];
-
-
-  document
-    .getElementById("progress")
-    .innerHTML =
-    `Question ${currentQuestion + 1} of ${questions.length}`;
-
-
-  document
-    .getElementById("question")
-    .innerHTML =
-    question.question;
-
-
-  const answersContainer =
-    document
-      .getElementById("answers");
-
-
-  answersContainer.innerHTML = "";
-
-
-  question.answers.forEach(
-    (answer, index) => {
-
-      const button =
-        document.createElement("button");
-
-
-      button.innerHTML =
-        answer;
-
-
-      button.classList.add(
-        "answer-btn"
-      );
-
-
-      button.onclick =
-        () => checkAnswer(index);
-
-
-      answersContainer.appendChild(
-        button
-      );
-
-    }
-  );
-
+html,
+body {
+  width: 100%;
+  min-height: 100%;
 }
 
 
-function checkAnswer(selectedAnswer) {
+/* =========================
+   PAGE
+========================= */
 
-  const question =
-    questions[currentQuestion];
+body {
 
+  min-height: 100vh;
+  min-height: 100dvh;
 
-  const buttons =
-    document.querySelectorAll(
-      ".answer-btn"
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  background:
+    linear-gradient(
+      135deg,
+      #74ebd5,
+      #ACB6E5
     );
 
+  padding:
+    max(15px, env(safe-area-inset-top))
+    max(15px, env(safe-area-inset-right))
+    max(15px, env(safe-area-inset-bottom))
+    max(15px, env(safe-area-inset-left));
 
-  buttons.forEach(
-    (button, index) => {
-
-      button.disabled = true;
-
-
-      if (
-        index === question.correct
-      ) {
-
-        button.classList.add(
-          "correct"
-        );
-
-      }
-
-    }
-  );
+  overflow-x: hidden;
+}
 
 
-  if (
-    selectedAnswer === question.correct
-  ) {
+/* =========================
+   GAME CONTAINER
+========================= */
 
-    score++;
+.game-container {
+
+  width: min(100%, 900px);
+
+  min-height:
+    min(750px, 92dvh);
+
+  background: white;
+
+  border-radius:
+    clamp(20px, 4vw, 30px);
+
+  padding:
+    clamp(20px, 5vw, 50px);
+
+  text-align: center;
+
+  box-shadow:
+    0 15px 40px
+    rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
 
 
-    document
-      .getElementById("result")
-      .innerHTML =
-      "🎉 Correct! Great job!";
+/* =========================
+   HEADER
+========================= */
+
+.game-header {
+  width: 100%;
+}
+
+h1 {
+
+  font-size:
+    clamp(26px, 5vw, 42px);
+
+  margin-bottom: 10px;
+
+}
+
+.progress {
+
+  font-size:
+    clamp(14px, 2.5vw, 20px);
+
+  margin:
+    clamp(10px, 2vw, 20px)
+    0;
+
+}
+
+
+/* =========================
+   QUESTION AREA
+========================= */
+
+.question-area {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+
+}
+
+
+/* =========================
+   QUESTION IMAGE
+========================= */
+
+.question-image {
+
+  display: none;
+
+  width:
+    min(100%, 520px);
+
+  max-height:
+    35dvh;
+
+  object-fit:
+    contain;
+
+  border-radius:
+    20px;
+
+  margin:
+    10px auto 20px;
+
+}
+
+
+/* =========================
+   QUESTION TEXT
+========================= */
+
+.question {
+
+  font-size:
+    clamp(24px, 5vw, 38px);
+
+  line-height:
+    1.35;
+
+  margin:
+    clamp(15px, 4vw, 35px)
+    0;
+
+  font-weight: bold;
+
+}
+
+
+/* =========================
+   ANSWERS
+========================= */
+
+.answers {
+
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    clamp(10px, 2vw, 20px);
+
+}
+
+
+/* =========================
+   ANSWER BUTTON
+========================= */
+
+.answer-btn {
+
+  min-height: 75px;
+
+  padding:
+    clamp(15px, 3vw, 25px);
+
+  border: none;
+
+  border-radius:
+    clamp(15px, 3vw, 22px);
+
+  font-size:
+    clamp(18px, 3vw, 26px);
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  touch-action:
+    manipulation;
+
+  transition:
+    transform 0.2s,
+    filter 0.2s;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
+.answer-btn:hover {
+
+  transform:
+    scale(1.03);
+
+}
+
+
+.answer-btn:active {
+
+  transform:
+    scale(0.97);
+
+}
+
+
+/* Màu 4 đáp án */
+
+.answer-btn:nth-child(1) {
+  background: #ffb3ba;
+}
+
+.answer-btn:nth-child(2) {
+  background: #bae1ff;
+}
+
+.answer-btn:nth-child(3) {
+  background: #baffc9;
+}
+
+.answer-btn:nth-child(4) {
+  background: #ffffba;
+}
+
+
+/* =========================
+   CORRECT / WRONG
+========================= */
+
+.correct {
+
+  background: #4CAF50 !important;
+  color: white;
+
+}
+
+
+.wrong {
+
+  background: #f44336 !important;
+  color: white;
+
+}
+
+
+/* =========================
+   RESULT
+========================= */
+
+.result {
+
+  font-size:
+    clamp(20px, 4vw, 30px);
+
+  min-height: 40px;
+
+  margin:
+    clamp(15px, 3vw, 25px)
+    0;
+
+}
+
+
+/* =========================
+   NEXT BUTTON
+========================= */
+
+.next-btn {
+
+  align-self: center;
+
+  min-height: 55px;
+
+  margin-top:
+    clamp(10px, 3vw, 25px);
+
+  padding:
+    15px
+    clamp(25px, 5vw, 45px);
+
+  border: none;
+
+  border-radius: 999px;
+
+  background: #5c6bc0;
+
+  color: white;
+
+  font-size:
+    clamp(18px, 3vw, 24px);
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  touch-action:
+    manipulation;
+
+  transition:
+    transform 0.2s;
+
+}
+
+
+.next-btn:hover {
+
+  transform:
+    scale(1.05);
+
+}
+
+
+.next-btn:active {
+
+  transform:
+    scale(0.96);
+
+}
+
+
+/* =========================
+   MOBILE PORTRAIT
+========================= */
+
+@media (max-width: 600px)
+and (orientation: portrait) {
+
+  body {
+
+    align-items:
+      flex-start;
 
   }
 
-  else {
 
-    buttons[
-      selectedAnswer
-    ]
-      .classList.add(
-        "wrong"
+  .game-container {
+
+    min-height:
+      calc(
+        100dvh - 30px
       );
 
-
-    document
-      .getElementById("result")
-      .innerHTML =
-      "❌ Oops! The green answer is correct!";
+    justify-content:
+      flex-start;
 
   }
 
 
-  document
-    .getElementById("nextBtn")
-    .style.display =
-    "inline-block";
+  .answers {
 
-}
-
-
-function nextQuestion() {
-
-  currentQuestion++;
-
-
-  if (
-    currentQuestion <
-    questions.length
-  ) {
-
-    loadQuestion();
+    grid-template-columns:
+      1fr;
 
   }
 
-  else {
 
-    showFinalResult();
+  .answer-btn {
+
+    min-height:
+      65px;
 
   }
 
 }
 
 
-function showFinalResult() {
+/* =========================
+   MOBILE LANDSCAPE
+========================= */
 
-  document
-    .querySelector(
-      ".game-container"
-    )
-    .innerHTML = `
+@media (max-height: 600px)
+and (orientation: landscape) {
 
-      <h1>🏆 Game Over!</h1>
+  body {
 
-      <div id="result">
+    padding:
+      10px;
 
-        You got
-        ${score} / ${questions.length}
-        correct!
-
-      </div>
-
-      <button
-        class="next-btn"
-        onclick="restartGame()"
-      >
-
-        🔄 Play Again
-
-      </button>
-
-    `;
-
-}
+  }
 
 
-function restartGame() {
+  .game-container {
 
-  currentQuestion = 0;
+    min-height:
+      calc(
+        100dvh - 20px
+      );
 
-  score = 0;
+    max-width:
+      1100px;
 
+    padding:
+      15px
+      clamp(25px, 5vw, 60px);
 
-  document
-    .querySelector(
-      ".game-container"
-    )
-    .innerHTML = `
-
-      <h1>
-        🎮 Movers Unit 4 Quiz
-      </h1>
-
-      <div
-        class="progress"
-        id="progress"
-      ></div>
-
-      <div
-        class="question"
-        id="question"
-      ></div>
-
-      <div
-        class="answers"
-        id="answers"
-      ></div>
-
-      <div
-        id="result"
-      ></div>
-
-      <button
-        class="next-btn"
-        id="nextBtn"
-        onclick="nextQuestion()"
-        style="display:none;"
-      >
-
-        Next ➡️
-
-      </button>
-
-    `;
+  }
 
 
-  loadQuestion();
+  h1 {
+
+    font-size:
+      clamp(22px, 4vw, 32px);
+
+    margin-bottom:
+      5px;
+
+  }
+
+
+  .progress {
+
+    margin:
+      5px 0;
+
+  }
+
+
+  .question-image {
+
+    max-height:
+      30dvh;
+
+    margin:
+      5px auto 10px;
+
+  }
+
+
+  .question {
+
+    font-size:
+      clamp(20px, 4vw, 30px);
+
+    margin:
+      10px 0;
+
+  }
+
+
+  .answer-btn {
+
+    min-height:
+      50px;
+
+    padding:
+      10px;
+
+  }
+
+
+  .result {
+
+    margin:
+      8px 0;
+
+    min-height:
+      25px;
+
+  }
+
+
+  .next-btn {
+
+    min-height:
+      45px;
+
+    padding:
+      10px 30px;
+
+    margin-top:
+      5px;
+
+  }
 
 }
 
