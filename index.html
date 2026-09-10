@@ -9,9 +9,8 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   >
 
-  <title>Movers Unit 4 Quiz</title>
+  <title>Movers Quiz</title>
 
-  <!-- Kết nối CSS -->
   <link rel="stylesheet" href="style.css">
 
 </head>
@@ -19,55 +18,73 @@
 
 <body>
 
-  <div class="game-container">
+  <main class="game-container">
 
-    <h1>
-      🎮 Movers Unit 4 Quiz
-    </h1>
+    <header class="game-header">
 
+      <h1 id="gameTitle">
+        🎮 Movers Quiz
+      </h1>
 
-    <div
-      class="progress"
-      id="progress"
-    >
-      Question 1 of 5
-    </div>
+      <div
+        class="progress"
+        id="progress"
+      >
+        Question 1 of 5
+      </div>
 
-
-    <div
-      class="question"
-      id="question"
-    >
-      Loading...
-    </div>
+    </header>
 
 
-    <div
+    <section class="question-area">
+
+      <img
+        id="questionImage"
+        class="question-image"
+        src=""
+        alt=""
+      >
+
+      <div
+        class="question"
+        id="question"
+      >
+        Loading...
+      </div>
+
+    </section>
+
+
+    <section
       class="answers"
       id="answers"
-    ></div>
+    >
+    </section>
 
 
     <div
       id="result"
-    ></div>
+      class="result"
+    >
+    </div>
 
 
     <button
       class="next-btn"
       id="nextBtn"
-      onclick="nextQuestion()"
-      style="display:none;"
+      type="button"
     >
-
       Next ➡️
-
     </button>
 
-  </div>
+
+  </main>
 
 
-  <!-- Kết nối JavaScript -->
+  <!-- Câu hỏi phải load trước -->
+  <script src="questions.js"></script>
+
+  <!-- Logic game load sau -->
   <script src="script.js"></script>
 
 </body>
